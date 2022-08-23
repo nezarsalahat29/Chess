@@ -2,7 +2,7 @@ package model;
 
 import model.exceptions.MoveError;
 
-public class Queen extends Piece{
+public class Queen extends Piece implements checkKing{
     public Queen(Color color, Location location, Board board) {
         super(color, location, board,"Q");
     }
@@ -55,5 +55,10 @@ public class Queen extends Piece{
     @Override
     public String getName() {
         return "Queen";
+    }
+
+    @Override
+    public boolean checkKing() {
+        return false;
     }
 }

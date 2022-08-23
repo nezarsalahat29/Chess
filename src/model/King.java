@@ -55,4 +55,5 @@ public class King extends Piece {
     public String getName() {
         return "King";
     }
+
 }

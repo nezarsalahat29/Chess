@@ -1,7 +1,7 @@
 package model;
 
 import model.exceptions.*;
-public class Bishop extends Piece {
+public class Bishop extends Piece implements checkKing{
 
     public Bishop(Color color, Location location, Board board) {
         super(color, location, board,"B");
@@ -50,5 +50,10 @@ public class Bishop extends Piece {
     public String getName()
     {
         return "Bishop";
+    }
+
+    @Override
+    public boolean checkKing() {
+        return false;
     }
 }

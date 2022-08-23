@@ -74,6 +74,7 @@ public class Board
         } else {
             throw new MoveError("not free");
         }
+
     }
 
     private void movePieceCapturing(Location from, Location to)
@@ -87,7 +88,7 @@ public class Board
         {
             whiteCaptured.add(captured);
         }
-        if(captured.getName().equals("K"))
+        if(captured.getName().equals("King"))
         {
             if (captured.color==Color.black)
             {
@@ -223,5 +224,4 @@ public class Board
         }
         return true;
     }
-
 }
