@@ -16,9 +16,10 @@ public class Game {
     private ArrayList<String> validMoves;
     Scanner sc = new Scanner(System.in);
 
-    public Game(Board board) {
+    public Game() {
         super();
-        this.board = board;
+        this.board=new Board();
+
         gameInAction = true;
         turn = false;
         validMoves = new ArrayList<>();
@@ -27,6 +28,7 @@ public class Game {
 
     public void play()
     {
+        this.board.init();
         System.out.print("Enter the white player name: ");
         WhitePlayer= sc.nextLine();
         System.out.print("Enter the black player name: ");

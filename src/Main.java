@@ -2,9 +2,7 @@ import model.Board;
 import model.Game;
 public class Main {
     public static void main(String[] args) {
-        Board board= new Board();
-        board.init();
-        new Game(board).play();
+        new Game().play();
     }
 }
 
