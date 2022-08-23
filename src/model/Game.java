@@ -25,7 +25,7 @@ public class Game {
 
     }
 
-    public void play() throws CommandError {
+    public void play()  {
         this.board.init();
         System.out.print("Enter the white player name: ");
         WhitePlayer= sc.nextLine();
@@ -50,7 +50,7 @@ public class Game {
             }
 
             String play = sc.nextLine();
-            handleInput(play);
+                handleInput(play);
         }
     }
 
@@ -58,7 +58,7 @@ public class Game {
         turn = !turn;
     }
 
-    public void handleInput(String moveString) throws CommandError
+    public void handleInput(String moveString)
     {
 
         Pattern patternMovement = Pattern.compile("[a-h][1-8] [a-h][1-8]", Pattern.CASE_INSENSITIVE);
@@ -74,7 +74,7 @@ public class Game {
         }
         else
         {
-            throw new CommandError(turn+" player");
+            System.out.println("Try Again!");
         }
 
     }
