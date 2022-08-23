@@ -4,7 +4,7 @@ public class CommandError extends Exception {
     String message;
     public CommandError(String s){
         super();
-        message=s;
+        message=s+ " Wrong Command, Try Again!";
     }
 
     @Override

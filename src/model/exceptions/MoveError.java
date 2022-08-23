@@ -4,7 +4,7 @@ public class MoveError extends Exception {
     String message;
     public MoveError(String s){
         super();
-        message=s;
+        message= s+", Invalid Move";
     }
 
     @Override

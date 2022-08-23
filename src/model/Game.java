@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import model.exceptions.*;
-//TODO:: ADD Exit Command and Move Word in Game
 public class Game {
     String WhitePlayer;
     String BlackPlayer;
@@ -26,8 +25,7 @@ public class Game {
 
     }
 
-    public void play()
-    {
+    public void play() throws CommandError {
         this.board.init();
         System.out.print("Enter the white player name: ");
         WhitePlayer= sc.nextLine();
@@ -60,27 +58,31 @@ public class Game {
         turn = !turn;
     }
 
-    public void handleInput(String moveString)
+    public void handleInput(String moveString) throws CommandError
     {
 
         Pattern patternMovement = Pattern.compile("[a-h][1-8] [a-h][1-8]", Pattern.CASE_INSENSITIVE);
         Matcher movementMatcher = patternMovement.matcher(moveString);
         boolean movementMatchFound = movementMatcher.find();
-        if (movementMatchFound && moveString.length() == 5)
+        if (movementMatchFound && moveString.length() == 10)
         {
             handleMove(moveString);
         }
+        else if(moveString.equals("exit")){
+            System.out.println("Good bye.");
+            this.gameInAction=false;
+        }
         else
         {
-            System.out.println("\n!!! This is not a valid input!!!\n");
+            throw new CommandError(turn+" player");
         }
 
     }
 
     public void handleMove(String moveString) {
 
-        Location from = board.getLocation(moveString.substring(0, 2));
-        Location to = board.getLocation(moveString.substring(3, 5));
+        Location from = board.getLocation(moveString.substring(5, 7));
+        Location to = board.getLocation(moveString.substring(8, 10));
 
         Piece pieceToMove = from.getPiece();
 

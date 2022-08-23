@@ -6,6 +6,5 @@ public class Main {
     }
 }
 
-//TODO:: ADD Exit Command and Move Word in Game
 //TODO:: Complete The Pieces with Strategy
 //TODO:: State and Strategy(Valid) and Template Design Patterns

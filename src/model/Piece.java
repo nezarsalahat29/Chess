@@ -15,7 +15,7 @@ public abstract class Piece {
         this.name=name;
     }
     public abstract void moveToLocation(Location newLocation) throws MoveError;
-    protected abstract boolean isValidMove(Location To) ;
+    protected abstract boolean isValidMove(Location To) throws MoveError;
     public abstract Location getLocation();
     public abstract void setLocation(Location location);
     public abstract String getName();
