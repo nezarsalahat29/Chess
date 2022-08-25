@@ -89,13 +89,13 @@ public class Game {
 
         try {
             if (!thereIsPieceInLoc(from)) {
-                throw new MoveError("No Piece in Location");
+                throw new MoveError(MoveError.No_Piece);
             }
             if (!checkIfPieceToMoveMatchesPlayer(from)) {
-                throw new MoveError("Not your Piece");
+                throw new MoveError(MoveError.NOT_YOUR_PIECE);
             }
             if(board.isKingCheck(turn)){
-                throw new MoveError("King is Checked, Save Your King");
+                throw new MoveError(MoveError.King_Is_Check);
             }
             pieceToMove.moveToLocation(to);
             changeTurn();

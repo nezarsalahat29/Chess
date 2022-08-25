@@ -13,7 +13,7 @@ public class King extends Piece {
         if (isValidMove(newLocation)) {
             board.movePiece(location, newLocation);
         } else {
-            throw new MoveError(getName());
+            throw new MoveError(MoveError.KING);
         }
     }
 
