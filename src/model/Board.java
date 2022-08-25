@@ -1,14 +1,17 @@
 package model;
-import java.util.ArrayList;
-import java.util.List;
-
 import model.exceptions.*;
 public class Board
 {
     public  Location[][] locations;
-    List<Piece> whiteCaptured;
-    List<Piece> blackCaptured;
     boolean isKingCaptured;
+    boolean isKingCheck;
+    Rook BR1,BR2,WR1,WR2;
+    Knight BN1,BN2,WN1,WN2;
+    Bishop BB1,BB2,WB1,WB2;
+    Queen BQ,WQ;
+    King BK,WK;
+    Pawn []BP;
+    Pawn []WP;
     public Board()
     {
         locations = new Location[8][8];
@@ -19,40 +22,44 @@ public class Board
                 locations[i][j] = new Location(i, j);
             }
         }
-        whiteCaptured = new ArrayList<>();
-        blackCaptured = new ArrayList<>();
+        BP=new Pawn[8];
+        WP=new Pawn[8];
         isKingCaptured = false;
+        isKingCheck=false;
     }
 
     public void init()
     {
         // BLACK
-        new Rook(Color.black, locations[0][0], this);
-        new Rook(Color.black, locations[0][7], this);
-        new Knight(Color.black, locations[0][1], this);
-        new Knight(Color.black, locations[0][6], this);
-        new Bishop(Color.black, locations[0][2], this);
-        new Bishop(Color.black, locations[0][5], this);
-        new Queen(Color.black, locations[0][3], this);
-        new King(Color.black, locations[0][4], this);
+        BR1=new Rook(Color.black, locations[0][0], this);
+        BR2=new Rook(Color.black, locations[0][7], this);
+        BN1=new Knight(Color.black, locations[0][1], this);
+        BN2=new Knight(Color.black, locations[0][6], this);
+        BB1=new Bishop(Color.black, locations[0][2], this);
+        BB2=new Bishop(Color.black, locations[0][5], this);
+        BQ=new Queen(Color.black, locations[0][3], this);
+        BK=new King(Color.black, locations[0][4], this);
+        //BP[0]=new Pawn(Color.black,locations[1][0],this);
         for (int i = 0; i < 8; i++)
         {
-            new Pawn(Color.black, locations[1][i], this);
+            BP[i]=new Pawn(Color.black, locations[1][i], this);
         }
 
         // WHITE
-        new Rook(Color.white, locations[7][0], this);
-        new Rook(Color.white, locations[7][7], this);
-        new Knight(Color.white, locations[7][1], this);
-        new Knight(Color.white, locations[7][6], this);
-        new Bishop(Color.white, locations[7][2], this);
-        new Bishop(Color.white, locations[7][5], this);
-        new Queen(Color.white, locations[7][3], this);
-        new King(Color.white, locations[7][4], this);
+        WR1= new Rook(Color.white, locations[7][0], this);
+        WR2=new Rook(Color.white, locations[7][7], this);
+        WN1=new Knight(Color.white, locations[7][1], this);
+        WN2=new Knight(Color.white, locations[7][6], this);
+        WB1=new Bishop(Color.white, locations[7][2], this);
+        WB2=new Bishop(Color.white, locations[7][5], this);
+        WQ=new Queen(Color.white, locations[7][3], this);
+        WK= new King(Color.white, locations[7][4], this);
+        //WP[0]=new Pawn(Color.black,locations[1][0],this);
         for (int i = 0; i < 8; i++)
         {
-            new Pawn(Color.white, locations[6][i], this);
+            WP[i]=new Pawn(Color.white, locations[6][i], this);
         }
+
     }
     public Location getLocation(String str)
     {
@@ -67,6 +74,7 @@ public class Board
 
     public void movePiece(Location from, Location to) throws MoveError
     {
+
         if (getPieceAt(to) == null) {
             movePieceWithoutCapturing(from, to);
         } else if (getPieceAt(from).color != getPieceAt(to).color) {
@@ -80,14 +88,6 @@ public class Board
     private void movePieceCapturing(Location from, Location to)
     {
         Piece captured = getPieceAt(to);
-        if (captured.color == Color.black)
-        {
-            blackCaptured.add(captured);
-        }
-        else
-        {
-            whiteCaptured.add(captured);
-        }
         if(captured.getName().equals("King"))
         {
             if (captured.color==Color.black)
@@ -109,6 +109,31 @@ public class Board
     {
         to.setPiece(getPieceAt(from));
         from.setPiece(null);
+    }
+
+    public boolean isKingCheck(boolean turn) throws MoveError {
+        //turn true black
+        if(turn){
+            if(WR1.isValidMove(BK.getLocation()) || WR2.isValidMove(BK.getLocation()) ||  WN1.isValidMove(BK.getLocation()) ||  WN2.isValidMove(BK.getLocation()) || WB1.isValidMove(BK.getLocation()) || WB2.isValidMove(BK.getLocation()) || WQ.isValidMove(BK.getLocation())){
+                return true;
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                if(WP[i].isValidMove(BK.getLocation())) return true;
+            }
+           return false;
+        }
+        else{
+            if(BR1.isValidMove(WK.getLocation()) || BR2.isValidMove(WK.getLocation()) ||  BN1.isValidMove(WK.getLocation()) ||  BN2.isValidMove(WK.getLocation()) || BB1.isValidMove(WK.getLocation()) || BB2.isValidMove(WK.getLocation()) || BQ.isValidMove(WK.getLocation())){
+                return true;
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                if(BP[i].isValidMove(WK.getLocation())) return true;
+            }
+            return false;
+        }
+
     }
     public boolean freeHorizontalPath(Location from, Location to) throws MoveError {
         if (from.getCol() < to.getCol()) {
@@ -224,4 +249,6 @@ public class Board
         }
         return true;
     }
+
+
 }

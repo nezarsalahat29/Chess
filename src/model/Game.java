@@ -12,7 +12,7 @@ public class Game {
     private Board board;
     private boolean turn;
     private boolean gameInAction;
-    private ArrayList<String> validMoves;
+
     Scanner sc = new Scanner(System.in);
 
     public Game() {
@@ -21,7 +21,7 @@ public class Game {
 
         gameInAction = true;
         turn = false;
-        validMoves = new ArrayList<>();
+
 
     }
 
@@ -51,6 +51,7 @@ public class Game {
 
             String play = sc.nextLine();
                 handleInput(play);
+
         }
     }
 
@@ -93,9 +94,10 @@ public class Game {
             if (!checkIfPieceToMoveMatchesPlayer(from)) {
                 throw new MoveError("Not your Piece");
             }
-
+            if(board.isKingCheck(turn)){
+                throw new MoveError("King is Checked, Save Your King");
+            }
             pieceToMove.moveToLocation(to);
-            validMoves.add(moveString);
             changeTurn();
         } catch (MoveError e) {
             System.out.println(e.getMessage());
