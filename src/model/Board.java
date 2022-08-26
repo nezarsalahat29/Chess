@@ -7,13 +7,13 @@ public class Board
     public  Location[][] locations;
     boolean isKingCaptured;
     boolean isKingCheck;
-    Rook Black_Rook1,Black_Rook22,White_Rook1,White_Rook2;
-    Knight Black_Knight1,Black_Knight2,White_Knigh1,White_Knigh2;
+    Rook Black_Rook1,Black_Rook2,White_Rook1,White_Rook2;
+    Knight Black_Knight1,Black_Knight2,White_Knight1,White_Knight2;
     Bishop Black_Bishop1,Black_Bishop2,White_Bishop1,White_Bishop2;
     Queen Black_Queen,White_Queen;
     King Black_King,White_King;
-    Pawn []Black_Pawn;
-    Pawn []White_Pawn;
+    Piece []Black_Pawn;
+    Piece []White_Pawn;
     List<Piece> whiteCaptured;
     List<Piece> blackCaptured;
     public Board()
@@ -36,7 +36,7 @@ public class Board
     {
         // BLACK
         Black_Rook1=new Rook(Color.black, locations[0][0], this);
-        Black_Rook22=new Rook(Color.black, locations[0][7], this);
+        Black_Rook2=new Rook(Color.black, locations[0][7], this);
         Black_Knight1=new Knight(Color.black, locations[0][1], this);
         Black_Knight2=new Knight(Color.black, locations[0][6], this);
         Black_Bishop1=new Bishop(Color.black, locations[0][2], this);
@@ -51,8 +51,8 @@ public class Board
         // WHITE
         White_Rook1= new Rook(Color.white, locations[7][0], this);
         White_Rook2=new Rook(Color.white, locations[7][7], this);
-        White_Knigh1=new Knight(Color.white, locations[7][1], this);
-        White_Knigh2=new Knight(Color.white, locations[7][6], this);
+        White_Knight1=new Knight(Color.white, locations[7][1], this);
+        White_Knight2=new Knight(Color.white, locations[7][6], this);
         White_Bishop1=new Bishop(Color.white, locations[7][2], this);
         White_Bishop2=new Bishop(Color.white, locations[7][5], this);
         White_Queen=new Queen(Color.white, locations[7][3], this);
@@ -122,7 +122,7 @@ public class Board
     public boolean isKingCheck(boolean turn) throws MoveError {
         //turn true black
         if(turn){
-            if(White_Rook1.isValidMove(Black_King.getLocation()) || White_Rook2.isValidMove(Black_King.getLocation()) ||  White_Knigh1.isValidMove(Black_King.getLocation()) ||  White_Knigh2.isValidMove(Black_King.getLocation()) || White_Bishop1.isValidMove(Black_King.getLocation()) || White_Bishop2.isValidMove(Black_King.getLocation()) || White_Queen.isValidMove(Black_King.getLocation())){
+            if(White_Rook1.isValidMove(Black_King.getLocation()) || White_Rook2.isValidMove(Black_King.getLocation()) ||  White_Knight1.isValidMove(Black_King.getLocation()) ||  White_Knight2.isValidMove(Black_King.getLocation()) || White_Bishop1.isValidMove(Black_King.getLocation()) || White_Bishop2.isValidMove(Black_King.getLocation()) || White_Queen.isValidMove(Black_King.getLocation())){
                 return true;
             }
             for (int i = 0; i < 8; i++)
@@ -132,7 +132,7 @@ public class Board
            return false;
         }
         else{
-            if(Black_Rook1.isValidMove(White_King.getLocation()) || Black_Rook22.isValidMove(White_King.getLocation()) ||  Black_Knight1.isValidMove(White_King.getLocation()) ||  Black_Knight2.isValidMove(White_King.getLocation()) || Black_Bishop1.isValidMove(White_King.getLocation()) || Black_Bishop2.isValidMove(White_King.getLocation()) || Black_Queen.isValidMove(White_King.getLocation())){
+            if(Black_Rook1.isValidMove(White_King.getLocation()) || Black_Rook2.isValidMove(White_King.getLocation()) ||  Black_Knight1.isValidMove(White_King.getLocation()) ||  Black_Knight2.isValidMove(White_King.getLocation()) || Black_Bishop1.isValidMove(White_King.getLocation()) || Black_Bishop2.isValidMove(White_King.getLocation()) || Black_Queen.isValidMove(White_King.getLocation())){
                 return true;
             }
             for (int i = 0; i < 8; i++)
