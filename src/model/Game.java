@@ -12,6 +12,9 @@ public class Game {
     private Board board;
     private boolean turn;
     private boolean gameInAction;
+    private int numOfMoves=0;
+
+
 
     Scanner sc = new Scanner(System.in);
 
@@ -40,6 +43,10 @@ public class Game {
                 break;
             }
 
+            if (numOfMoves==50 || ((board.getBCaptured()== board.getWCaptured()) && board.getBCaptured()>13)){
+                System.out.println("\n!!! Draw !!!\n");
+                gameInAction=false;
+            }
             if (!turn)
             {
                 System.out.print("\nEnter next move (white player): ");
@@ -61,7 +68,9 @@ public class Game {
 
     public void handleInput(String moveString)
     {
-
+        if (board.isKingCheck){
+            System.out.println("\nYour King is in Danger , Move it!!\n");
+        }
         Pattern patternMovement = Pattern.compile("[a-h][1-8] [a-h][1-8]", Pattern.CASE_INSENSITIVE);
         Matcher movementMatcher = patternMovement.matcher(moveString);
         boolean movementMatchFound = movementMatcher.find();
@@ -98,6 +107,7 @@ public class Game {
                 throw new MoveError(MoveError.King_Is_Check);
             }
             pieceToMove.moveToLocation(to);
+            numOfMoves++;
             changeTurn();
         } catch (MoveError e) {
             System.out.println(e.getMessage());

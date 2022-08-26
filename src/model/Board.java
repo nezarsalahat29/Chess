@@ -1,5 +1,7 @@
 package model;
 import model.exceptions.*;
+
+import java.util.List;
 public class Board
 {
     public  Location[][] locations;
@@ -12,6 +14,8 @@ public class Board
     King Black_King,White_King;
     Pawn []Black_Pawn;
     Pawn []White_Pawn;
+    List<Piece> whiteCaptured;
+    List<Piece> blackCaptured;
     public Board()
     {
         locations = new Location[8][8];
@@ -86,6 +90,12 @@ public class Board
     private void movePieceCapturing(Location from, Location to)
     {
         Piece captured = getPieceAt(to);
+        if (captured.color == Color.black) {
+            blackCaptured.add(captured);
+        } else {
+            whiteCaptured.add(captured);
+        }
+
         if(captured.getName().equals("King"))
         {
             if (captured.color==Color.black)
@@ -247,6 +257,11 @@ public class Board
         }
         return true;
     }
-
+    public int getWCaptured(){
+        return whiteCaptured.size();
+    }
+    public int getBCaptured(){
+        return blackCaptured.size();
+    }
 
 }
