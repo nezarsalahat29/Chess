@@ -45,7 +45,7 @@ public class Game {
                 break;
             }
             // || ((board.getBCaptured()== board.getWCaptured()) && board.getBCaptured()>13)
-            if (numOfMoves==50){
+            if (numOfMoves==120){
                 System.out.println("\n!!! Draw !!!\n");
                 gameInAction=false;
             }
@@ -122,7 +122,7 @@ public class Game {
             pieceToMove.moveToLocation(to);
             numOfMoves++;
             changeTurn();
-        } catch (MoveError e) {
+        } catch (MoveError | CommandError e) {
             System.out.println(e.getMessage());
         }
 

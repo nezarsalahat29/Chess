@@ -2,6 +2,8 @@ package model;
 import model.exceptions.*;
 
 import java.util.List;
+import java.util.Scanner;
+
 public class Board
 {
     public  Location[][] locations;
@@ -16,6 +18,8 @@ public class Board
     Piece []White_Pawn;
     List<Piece> whiteCaptured;
     List<Piece> blackCaptured;
+    List<Piece> wBoard;
+    List<Piece> bBoard;
     public Board()
     {
         locations = new Location[8][8];
@@ -44,10 +48,21 @@ public class Board
         Black_Bishop2=new Bishop(Color.black, locations[0][5], this);
         Black_Queen=new Queen(Color.black, locations[0][3], this);
         Black_King=new King(Color.black, locations[0][4], this);
+        bBoard.add(Black_King);
+        bBoard.add(Black_Bishop1);
+        bBoard.add(Black_Bishop2);
+        bBoard.add(Black_Knight1);
+        bBoard.add(Black_Knight2);
+        bBoard.add(Black_Rook1);
+        bBoard.add(Black_Rook2);
+        bBoard.add(Black_Queen);
+
         for (int i = 0; i < 8; i++)
         {
             Black_Pawn[i]=new Pawn(Color.black, locations[1][i], this);
+            bBoard.add(Black_Pawn[i]);
         }
+
 
         // WHITE
         White_Rook1= new Rook(Color.white, locations[7][0], this);
@@ -58,9 +73,18 @@ public class Board
         White_Bishop2=new Bishop(Color.white, locations[7][5], this);
         White_Queen=new Queen(Color.white, locations[7][3], this);
         White_King= new King(Color.white, locations[7][4], this);
+        wBoard.add(White_King);
+        wBoard.add(White_Bishop1);
+        wBoard.add(White_Bishop2);
+        wBoard.add(White_Knight1);
+        wBoard.add(White_Knight2);
+        wBoard.add(White_Rook1);
+        wBoard.add(White_Rook2);
+        wBoard.add(White_Queen);
         for (int i = 0; i < 8; i++)
         {
             White_Pawn[i]=new Pawn(Color.white, locations[6][i], this);
+            wBoard.add(White_Pawn[i]);
         }
 
     }
@@ -75,8 +99,36 @@ public class Board
         return locations[loc.getRow()][loc.getCol()].getPiece();
     }
 
-    public void movePiece(Location from, Location to) throws MoveError
-    {
+    public void movePiece(Location from, Location to) throws MoveError, CommandError {
+        if(getPieceAt(from).getClass().isInstance(Pawn.class)){
+            if (from.getRow()==7 || from.getRow()==0){
+                System.out.println("\n You can make a promotion for your Pawn !!\n");
+                System.out.println("\n Enter name of piece that you want to promote to: Queen, Knight, Rook, Bishop.");
+                Scanner sc=new Scanner(System.in);
+                String pro=sc.nextLine();
+                if (pro.equals("Queen")){
+                    Queen newPiece=new Queen(from.getPiece().color,from,this);
+                    from.setPiece(newPiece);
+                }
+                else if (pro.equals("Knight")){
+                    Knight newPiece=new Knight(from.getPiece().color,from,this);
+                    from.setPiece(newPiece);
+                }
+                else if (pro.equals("Rook")) {
+                    Rook newPiece=new Rook(from.getPiece().color,from,this);
+                    from.setPiece(newPiece);
+                }
+                else if (pro.equals("Bishop")) {
+                    Bishop newPiece=new Bishop(from.getPiece().color,from,this);
+                    from.setPiece(newPiece);
+
+                }
+                else {
+                    throw new CommandError(CommandError.Wrong_Promotion);
+                }
+
+            }
+        }
         if (getPieceAt(to) == null) {
             movePieceWithoutCapturing(from, to);
         } else if (getPieceAt(from).color != getPieceAt(to).color) {
@@ -102,6 +154,11 @@ public class Board
             }
             isKingCaptured=true;
         }
+        if(captured.color == Color.black){
+            bBoard.remove(captured);
+        }else {
+            wBoard.remove(captured);
+        }
         captured.setLocation(null);
         to.setPiece(getPieceAt(from));
         from.setPiece(null);
@@ -116,23 +173,19 @@ public class Board
     public boolean isKingInCheck(boolean turn) throws MoveError {
         //turn true black
         if(turn){
-            if(White_Rook1.isValidMove(Black_King.getLocation()) || White_Rook2.isValidMove(Black_King.getLocation()) ||  White_Knight1.isValidMove(Black_King.getLocation()) ||  White_Knight2.isValidMove(Black_King.getLocation()) || White_Bishop1.isValidMove(Black_King.getLocation()) || White_Bishop2.isValidMove(Black_King.getLocation()) || White_Queen.isValidMove(Black_King.getLocation())){
-                isBKingCheck=true;
-                return true;
-            }
-            for (int i = 0; i < 8; i++)
-            {
-                if(White_Pawn[i].isValidMove(Black_King.getLocation())){ isBKingCheck=true; return true;}
+            for (Piece piece : wBoard) {
+                if (piece.isValidMove(Black_King.getLocation())) {
+                    isBKingCheck = true;
+                    return true;
+                }
             }
         }
         else{
-            if(Black_Rook1.isValidMove(White_King.getLocation()) || Black_Rook2.isValidMove(White_King.getLocation()) ||  Black_Knight1.isValidMove(White_King.getLocation()) ||  Black_Knight2.isValidMove(White_King.getLocation()) || Black_Bishop1.isValidMove(White_King.getLocation()) || Black_Bishop2.isValidMove(White_King.getLocation()) || Black_Queen.isValidMove(White_King.getLocation())){
-                isWKingCheck=true;
-                return true;
-            }
-            for (int i = 0; i < 8; i++)
-            {
-                if(Black_Pawn[i].isValidMove(White_King.getLocation())) {isWKingCheck=true; return true;}
+            for (Piece piece : bBoard) {
+                if (piece.isValidMove(White_King.getLocation())) {
+                    isWKingCheck = true;
+                    return true;
+                }
             }
         }
         return false;

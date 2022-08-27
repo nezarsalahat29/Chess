@@ -1,5 +1,6 @@
 package model;
 
+import model.exceptions.CommandError;
 import model.exceptions.MoveError;
 
 public class Knight extends Piece {
@@ -8,7 +9,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public void moveToLocation(Location newLocation) throws MoveError {
+    public void moveToLocation(Location newLocation) throws MoveError, CommandError {
         if (isValidMove(newLocation)){
             board.movePiece(location,newLocation);
         }

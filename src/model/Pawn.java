@@ -1,5 +1,6 @@
 package model;
 
+import model.exceptions.CommandError;
 import model.exceptions.MoveError;
 
 public class Pawn extends Piece{
@@ -7,7 +8,7 @@ public class Pawn extends Piece{
         super(color, location, board,"P");
     }
     @Override
-    public void moveToLocation(Location newLocation) throws MoveError {
+    public void moveToLocation(Location newLocation) throws MoveError, CommandError {
         if (isValidMove(newLocation)){
             board.movePiece(location,newLocation);
         }

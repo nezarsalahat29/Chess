@@ -1,5 +1,6 @@
 package model;
 
+import model.exceptions.CommandError;
 import model.exceptions.MoveError;
 
 public abstract class Piece {
@@ -16,7 +17,7 @@ public abstract class Piece {
         this.name=name;
         checkKing=false;
     }
-    public abstract void moveToLocation(Location newLocation) throws MoveError;
+    public abstract void moveToLocation(Location newLocation) throws MoveError, CommandError;
     protected abstract boolean isValidMove(Location To) throws MoveError;
     public abstract Location getLocation();
     public abstract void setLocation(Location location);
