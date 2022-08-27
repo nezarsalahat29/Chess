@@ -30,7 +30,7 @@ public class Game {
 
     }
 
-    public void play() throws MoveError {
+    public void play() throws MoveError, CommandError {
         this.board.init();
         System.out.println("\n\t\t\t\t Welcome to Chess\t\n");
         System.out.println("\n!!!!Enter 'exit' If you want to exit the game!!!!\n");
@@ -39,6 +39,7 @@ public class Game {
         System.out.print("Enter the black player name: ");
         BlackPlayer= sc.nextLine();
 
+        //Game start here::
         while (gameInAction)
         {
 
@@ -46,13 +47,16 @@ public class Game {
             {
                 break;
             }
-            // || ((board.getBCaptured()== board.getWCaptured()) && board.getBCaptured()>13)
+            //draw after 120 move without king killed
             if (numOfMoves==120){
                 System.out.println("\n!!! Draw !!!\n");
                 gameInAction=false;
             }
+
+            //white start with turn 1
             if (!turn)
             {
+                //for switch turn after 3 tries of make a king free
                 if (board.isKingInCheck(turn)) {
                     System.out.println("\n\n Your King is in Danger , Move it!!\n");
                     checkWKing++;
@@ -79,8 +83,7 @@ public class Game {
         turn = !turn;
     }
 
-    public void handleInput(String moveString)
-    {
+    public void handleInput(String moveString) throws CommandError {
 
         Pattern patternMovement = Pattern.compile("[a-h][1-8] [a-h][1-8]", Pattern.CASE_INSENSITIVE);
         Matcher movementMatcher = patternMovement.matcher(moveString);
@@ -95,13 +98,13 @@ public class Game {
         }
         else
         {
-            System.out.println("Try Again!");
+            throw new CommandError(CommandError.Wrong_Input);
         }
 
     }
 
     public void handleMove(String moveString) {
-
+        // move f2 f3
         Location from = board.getLocation(moveString.substring(5, 7));
         Location to = board.getLocation(moveString.substring(8, 10));
 

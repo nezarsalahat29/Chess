@@ -101,9 +101,11 @@ public class Board
     }
 
     public void movePiece(Location from, Location to) throws MoveError, CommandError {
+        //check if Pawn can promote
         if(getPieceAt(from).getClass().isInstance(Pawn.class)){
            promotion(from);
         }
+        // 2 types of move
         if (getPieceAt(to) == null) {
             movePieceWithoutCapturing(from, to);
         } else if (getPieceAt(from).color != getPieceAt(to).color) {
@@ -147,6 +149,7 @@ public class Board
     private void movePieceCapturing(Location from, Location to)
     {
         Piece captured = getPieceAt(to);
+        // End the game if King Captured
         if(captured.getName().equals("King"))
         {
             if (captured.color==Color.black)
@@ -176,7 +179,7 @@ public class Board
     }
 
     public boolean isKingInCheck(boolean turn) throws MoveError {
-        //turn true black
+        //turn true== black
         if(turn){
             for (Piece piece : wBoard) {
                 if (piece.isValidMove(Black_King.getLocation())) {
@@ -197,6 +200,7 @@ public class Board
 
     }
     public boolean freeHorizontalPath(Location from, Location to) throws MoveError {
+        //checking if horizontal in board locations is free
         if (from.getCol() < to.getCol()) {
             for (int i = from.getCol() + 1; i < to.getCol(); i++) {
                 if (locations[from.getRow()][i].getPiece() != null)
@@ -219,6 +223,7 @@ public class Board
     }
 
     public boolean freeVerticalPath(Location from, Location to) throws MoveError {
+        //checking if vertical in board locations is free
         if (from.getRow() < to.getRow()) {
             for (int i = from.getRow() + 1; i < to.getRow(); i++) {
                 if (locations[i][from.getCol()].getPiece() != null)
@@ -242,6 +247,7 @@ public class Board
     public boolean freeAntiDiagonalPath(Location from, Location to) throws MoveError {
         int row;
         int col;
+        //checking if Anti-Diagonal(like a Diagonal but opposite direction) in board locations is free
         if (from.getCol() < to.getCol()) {
 
             row = from.getRow() + 1;
@@ -276,6 +282,7 @@ public class Board
     }
 
     public boolean freeDiagonalPath(Location from, Location to) throws MoveError {
+        //checking if Diagonal in board locations is free
         int row;
         int col;
         if (from.getCol() < to.getCol()) {
