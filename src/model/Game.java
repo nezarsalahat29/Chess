@@ -103,13 +103,15 @@ public class Game {
 
     }
 
-    public void handleMove(String moveString) {
+    public void handleMove(String moveString) throws CommandError {
         // move f2 f3
         Location from = board.getLocation(moveString.substring(5, 7));
         Location to = board.getLocation(moveString.substring(8, 10));
 
         Piece pieceToMove = from.getPiece();
-
+        /*if(pieceToMove.getName().equals("P")){
+            board.promotion(from);
+        }*/
         try {
             if (!thereIsPieceInLoc(from)) {
                 throw new MoveError(MoveError.No_Piece);
@@ -118,8 +120,8 @@ public class Game {
                 throw new MoveError(MoveError.NOT_YOUR_PIECE);
             }
             if(board.isKingInCheck(turn)){
-                if (checkBKing==2){changeTurn(); throw new MoveError(MoveError.ChangeTurn);}
-                if (checkWKing==2){changeTurn();throw new MoveError(MoveError.ChangeTurn);}
+                if (checkBKing==2){changeTurn();checkBKing=0; throw new MoveError(MoveError.ChangeTurn);}
+                if (checkWKing==2){changeTurn();checkWKing=0;throw new MoveError(MoveError.ChangeTurn);}
                 throw new MoveError(MoveError.King_Is_Check);
 
             }

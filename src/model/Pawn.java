@@ -32,12 +32,18 @@ public class Pawn extends Piece{
     }
 
     private boolean isValidWhenCapturing(Location To) {
-        int x=1;
+      /*  int x=1;
         if (color==Color.white) x=-1;
         if (((location.getCol() - To.getCol() == 1) || (location.getCol() - To.getCol() == -1))
                 && (location.getRow() - To.getRow() == x))
             return true;
-        return false;
+        return false;*/
+        if (((location.getCol() - To.getCol() == 1) || (location.getCol() - To.getCol() == -1))
+                && (location.getRow() - To.getRow() == 1 || location.getRow() - To.getRow() == -1)) {
+            return true;
+        } else {
+           return false;
+        }
     }
 
     private boolean isValidWhenNotCapturing(Location To) throws MoveError {

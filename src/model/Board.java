@@ -101,10 +101,7 @@ public class Board
     }
 
     public void movePiece(Location from, Location to) throws MoveError, CommandError {
-        //check if Pawn can promote
-        if(getPieceAt(from).getClass().isInstance(Pawn.class)){
-           promotion(from);
-        }
+
         // 2 types of move
         if (getPieceAt(to) == null) {
             movePieceWithoutCapturing(from, to);
@@ -116,7 +113,7 @@ public class Board
 
     }
 
-    private void promotion(Location from) throws CommandError {
+    /*protected void promotion(Location from) throws CommandError {
         if (from.getRow()==7 || from.getRow()==0){
             System.out.println("\n You can make a promotion for your Pawn !!\n");
             System.out.println("\n Enter name of piece that you want to promote to: Queen, Knight, Rook, Bishop.");
@@ -144,7 +141,7 @@ public class Board
             }
 
         }
-    }
+    }*/
 
     private void movePieceCapturing(Location from, Location to)
     {
