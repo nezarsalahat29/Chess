@@ -3,7 +3,7 @@ package model.exceptions;
 public class MoveError extends Exception {
     public static final String No_Piece="\n No piece in location\n";
 
-    public static final String King_Is_Check="\n Your King Checked , Move it !\n";
+    public static final String King_Is_Check="\n Try Again!\n";
     public static final String NOT_YOUR_PIECE = "\n You tried to move your opponent's piece.\n";
     public static final String Piece_Invalid_Move= "\n Invalid Move\n";
     public static final String Not_Free="\n Not free\n";
@@ -23,6 +23,7 @@ public class MoveError extends Exception {
             + "\n! ! ! Pawns can only move forward one square at a time, "
             + "\n! ! ! except for their very first move where they can move forward two squares. "
             + "\n! ! ! If there is another piece directly in front of a pawn, it cannot move past or capture that piece.\n";
+    public static final String ChangeTurn="\nChange turn\n";
 
     public MoveError(String s){
         super(s);

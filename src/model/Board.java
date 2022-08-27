@@ -6,7 +6,7 @@ public class Board
 {
     public  Location[][] locations;
     boolean isKingCaptured;
-    boolean isKingCheck;
+    boolean isBKingCheck,isWKingCheck;
     Rook Black_Rook1,Black_Rook2,White_Rook1,White_Rook2;
     Knight Black_Knight1,Black_Knight2,White_Knight1,White_Knight2;
     Bishop Black_Bishop1,Black_Bishop2,White_Bishop1,White_Bishop2;
@@ -29,7 +29,8 @@ public class Board
         Black_Pawn=new Pawn[8];
         White_Pawn=new Pawn[8];
         isKingCaptured = false;
-        isKingCheck=false;
+        isBKingCheck=false;
+        isWKingCheck=false;
     }
 
     public void init()
@@ -76,7 +77,6 @@ public class Board
 
     public void movePiece(Location from, Location to) throws MoveError
     {
-
         if (getPieceAt(to) == null) {
             movePieceWithoutCapturing(from, to);
         } else if (getPieceAt(from).color != getPieceAt(to).color) {
@@ -90,21 +90,15 @@ public class Board
     private void movePieceCapturing(Location from, Location to)
     {
         Piece captured = getPieceAt(to);
-        if (captured.color == Color.black) {
-            blackCaptured.add(captured);
-        } else {
-            whiteCaptured.add(captured);
-        }
-
         if(captured.getName().equals("King"))
         {
             if (captured.color==Color.black)
             {
-                System.out.println("White wins");
+                System.out.println("=====White wins=====");
             }
             else
             {
-                System.out.println("Black wins");
+                System.out.println("=====Black wins=====");
             }
             isKingCaptured=true;
         }
@@ -119,28 +113,29 @@ public class Board
         from.setPiece(null);
     }
 
-    public boolean isKingCheck(boolean turn) throws MoveError {
+    public boolean isKingInCheck(boolean turn) throws MoveError {
         //turn true black
         if(turn){
             if(White_Rook1.isValidMove(Black_King.getLocation()) || White_Rook2.isValidMove(Black_King.getLocation()) ||  White_Knight1.isValidMove(Black_King.getLocation()) ||  White_Knight2.isValidMove(Black_King.getLocation()) || White_Bishop1.isValidMove(Black_King.getLocation()) || White_Bishop2.isValidMove(Black_King.getLocation()) || White_Queen.isValidMove(Black_King.getLocation())){
+                isBKingCheck=true;
                 return true;
             }
             for (int i = 0; i < 8; i++)
             {
-                if(White_Pawn[i].isValidMove(Black_King.getLocation())) return true;
+                if(White_Pawn[i].isValidMove(Black_King.getLocation())){ isBKingCheck=true; return true;}
             }
-           return false;
         }
         else{
             if(Black_Rook1.isValidMove(White_King.getLocation()) || Black_Rook2.isValidMove(White_King.getLocation()) ||  Black_Knight1.isValidMove(White_King.getLocation()) ||  Black_Knight2.isValidMove(White_King.getLocation()) || Black_Bishop1.isValidMove(White_King.getLocation()) || Black_Bishop2.isValidMove(White_King.getLocation()) || Black_Queen.isValidMove(White_King.getLocation())){
+                isWKingCheck=true;
                 return true;
             }
             for (int i = 0; i < 8; i++)
             {
-                if(Black_Pawn[i].isValidMove(White_King.getLocation())) return true;
+                if(Black_Pawn[i].isValidMove(White_King.getLocation())) {isWKingCheck=true; return true;}
             }
-            return false;
         }
+        return false;
 
     }
     public boolean freeHorizontalPath(Location from, Location to) throws MoveError {

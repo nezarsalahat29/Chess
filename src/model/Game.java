@@ -13,6 +13,8 @@ public class Game {
     private boolean turn;
     private boolean gameInAction;
     private int numOfMoves=0;
+    private int checkWKing=0;
+    private int checkBKing=0;
 
 
 
@@ -28,7 +30,7 @@ public class Game {
 
     }
 
-    public void play()  {
+    public void play() throws MoveError {
         this.board.init();
         System.out.print("Enter the white player name: ");
         WhitePlayer= sc.nextLine();
@@ -42,17 +44,26 @@ public class Game {
             {
                 break;
             }
-
-            if (numOfMoves==50 || ((board.getBCaptured()== board.getWCaptured()) && board.getBCaptured()>13)){
+            // || ((board.getBCaptured()== board.getWCaptured()) && board.getBCaptured()>13)
+            if (numOfMoves==50){
                 System.out.println("\n!!! Draw !!!\n");
                 gameInAction=false;
             }
             if (!turn)
             {
+                if (board.isKingInCheck(turn)) {
+                    System.out.println("\n\n Your King is in Danger , Move it!!\n");
+                    checkWKing++;
+                }
                 System.out.print("\nEnter next move (white player): ");
             }
             else
             {
+                if (board.isKingInCheck(turn)){
+                    System.out.println("\n\nYour King is in Danger , Move it!!\n");
+                    checkBKing++;
+                }
+
                 System.out.print("\nEnter next move (black player): ");
             }
 
@@ -68,9 +79,7 @@ public class Game {
 
     public void handleInput(String moveString)
     {
-        if (board.isKingCheck){
-            System.out.println("\nYour King is in Danger , Move it!!\n");
-        }
+
         Pattern patternMovement = Pattern.compile("[a-h][1-8] [a-h][1-8]", Pattern.CASE_INSENSITIVE);
         Matcher movementMatcher = patternMovement.matcher(moveString);
         boolean movementMatchFound = movementMatcher.find();
@@ -103,9 +112,13 @@ public class Game {
             if (!checkIfPieceToMoveMatchesPlayer(from)) {
                 throw new MoveError(MoveError.NOT_YOUR_PIECE);
             }
-            if(board.isKingCheck(turn)){
+            if(board.isKingInCheck(turn)){
+                if (checkBKing==2){changeTurn(); throw new MoveError(MoveError.ChangeTurn);}
+                if (checkWKing==2){changeTurn();throw new MoveError(MoveError.ChangeTurn);}
                 throw new MoveError(MoveError.King_Is_Check);
+
             }
+
             pieceToMove.moveToLocation(to);
             numOfMoves++;
             changeTurn();
