@@ -32,6 +32,8 @@ public class Game {
 
     public void play() throws MoveError {
         this.board.init();
+        System.out.println("\n\t\t\t\t Welcome to Chess\t\n");
+        System.out.println("\n!!!!Enter 'exit' If you want to exit the game!!!!\n");
         System.out.print("Enter the white player name: ");
         WhitePlayer= sc.nextLine();
         System.out.print("Enter the black player name: ");

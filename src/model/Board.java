@@ -1,6 +1,7 @@
 package model;
 import model.exceptions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,10 +17,8 @@ public class Board
     King Black_King,White_King;
     Piece []Black_Pawn;
     Piece []White_Pawn;
-    List<Piece> whiteCaptured;
-    List<Piece> blackCaptured;
-    List<Piece> wBoard;
-    List<Piece> bBoard;
+    ArrayList<Piece> wBoard;
+    ArrayList<Piece> bBoard;
     public Board()
     {
         locations = new Location[8][8];
@@ -33,6 +32,8 @@ public class Board
         Black_Pawn=new Pawn[8];
         White_Pawn=new Pawn[8];
         isKingCaptured = false;
+        bBoard=new ArrayList<>();
+        wBoard=new ArrayList<>();
         isBKingCheck=false;
         isWKingCheck=false;
     }
@@ -101,33 +102,7 @@ public class Board
 
     public void movePiece(Location from, Location to) throws MoveError, CommandError {
         if(getPieceAt(from).getClass().isInstance(Pawn.class)){
-            if (from.getRow()==7 || from.getRow()==0){
-                System.out.println("\n You can make a promotion for your Pawn !!\n");
-                System.out.println("\n Enter name of piece that you want to promote to: Queen, Knight, Rook, Bishop.");
-                Scanner sc=new Scanner(System.in);
-                String pro=sc.nextLine();
-                if (pro.equals("Queen")){
-                    Queen newPiece=new Queen(from.getPiece().color,from,this);
-                    from.setPiece(newPiece);
-                }
-                else if (pro.equals("Knight")){
-                    Knight newPiece=new Knight(from.getPiece().color,from,this);
-                    from.setPiece(newPiece);
-                }
-                else if (pro.equals("Rook")) {
-                    Rook newPiece=new Rook(from.getPiece().color,from,this);
-                    from.setPiece(newPiece);
-                }
-                else if (pro.equals("Bishop")) {
-                    Bishop newPiece=new Bishop(from.getPiece().color,from,this);
-                    from.setPiece(newPiece);
-
-                }
-                else {
-                    throw new CommandError(CommandError.Wrong_Promotion);
-                }
-
-            }
+           promotion(from);
         }
         if (getPieceAt(to) == null) {
             movePieceWithoutCapturing(from, to);
@@ -137,6 +112,36 @@ public class Board
             throw new MoveError(MoveError.Not_Free);
         }
 
+    }
+
+    private void promotion(Location from) throws CommandError {
+        if (from.getRow()==7 || from.getRow()==0){
+            System.out.println("\n You can make a promotion for your Pawn !!\n");
+            System.out.println("\n Enter name of piece that you want to promote to: Queen, Knight, Rook, Bishop.");
+            Scanner sc=new Scanner(System.in);
+            String pro=sc.nextLine();
+            if (pro.equals("Queen")){
+                Queen newPiece=new Queen(from.getPiece().color,from,this);
+                from.setPiece(newPiece);
+            }
+            else if (pro.equals("Knight")){
+                Knight newPiece=new Knight(from.getPiece().color,from,this);
+                from.setPiece(newPiece);
+            }
+            else if (pro.equals("Rook")) {
+                Rook newPiece=new Rook(from.getPiece().color,from,this);
+                from.setPiece(newPiece);
+            }
+            else if (pro.equals("Bishop")) {
+                Bishop newPiece=new Bishop(from.getPiece().color,from,this);
+                from.setPiece(newPiece);
+
+            }
+            else {
+                throw new CommandError(CommandError.Wrong_Promotion);
+            }
+
+        }
     }
 
     private void movePieceCapturing(Location from, Location to)
@@ -304,12 +309,6 @@ public class Board
 
         }
         return true;
-    }
-    public int getWCaptured(){
-        return whiteCaptured.size();
-    }
-    public int getBCaptured(){
-        return blackCaptured.size();
     }
 
 }
