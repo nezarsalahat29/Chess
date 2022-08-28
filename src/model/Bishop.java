@@ -8,13 +8,14 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public void moveToLocation(Location newLocation) throws MoveError {
+    public void moveToLocation(Location newLocation) throws MoveError, CommandError {
         if (isValidMove(newLocation)){
             board.movePiece(location,newLocation);
         }
         else
         {
-            throw new MoveError(getName());
+            //new MoveError(getName());
+            throw new MoveError(MoveError.BISHOP);
         }
     }
 
@@ -51,4 +52,5 @@ public class Bishop extends Piece {
     {
         return "Bishop";
     }
+
 }

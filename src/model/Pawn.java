@@ -1,5 +1,6 @@
 package model;
 
+import model.exceptions.CommandError;
 import model.exceptions.MoveError;
 
 public class Pawn extends Piece{
@@ -7,12 +8,12 @@ public class Pawn extends Piece{
         super(color, location, board,"P");
     }
     @Override
-    public void moveToLocation(Location newLocation) throws MoveError {
+    public void moveToLocation(Location newLocation) throws MoveError, CommandError {
         if (isValidMove(newLocation)){
             board.movePiece(location,newLocation);
         }
         else {
-            throw new MoveError(getName());
+            throw new MoveError(MoveError.PAWN);
         }
     }
 
@@ -31,12 +32,18 @@ public class Pawn extends Piece{
     }
 
     private boolean isValidWhenCapturing(Location To) {
-        int x=1;
+      /*  int x=1;
         if (color==Color.white) x=-1;
         if (((location.getCol() - To.getCol() == 1) || (location.getCol() - To.getCol() == -1))
                 && (location.getRow() - To.getRow() == x))
             return true;
-        return false;
+        return false;*/
+        if (((location.getCol() - To.getCol() == 1) || (location.getCol() - To.getCol() == -1))
+                && (location.getRow() - To.getRow() == 1 || location.getRow() - To.getRow() == -1)) {
+            return true;
+        } else {
+           return false;
+        }
     }
 
     private boolean isValidWhenNotCapturing(Location To) throws MoveError {
@@ -84,4 +91,6 @@ public class Pawn extends Piece{
     public String getName() {
         return "Pawn";
     }
+
+
 }

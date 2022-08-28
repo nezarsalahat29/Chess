@@ -1,5 +1,6 @@
 package model;
 
+import model.exceptions.CommandError;
 import model.exceptions.MoveError;
 
 public class Rook extends Piece{
@@ -8,12 +9,12 @@ public class Rook extends Piece{
     }
 
     @Override
-    public void moveToLocation(Location newLocation) throws MoveError {
+    public void moveToLocation(Location newLocation) throws MoveError, CommandError {
         if (isValidMove(newLocation)){
             board.movePiece(location,newLocation);
         }
         else {
-            throw new MoveError(getName());
+            throw new MoveError(MoveError.ROOK);
         }
     }
 
@@ -41,4 +42,5 @@ public class Rook extends Piece{
     public String getName() {
         return "Rook";
     }
+
 }

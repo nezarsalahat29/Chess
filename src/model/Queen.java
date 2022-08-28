@@ -1,19 +1,19 @@
 package model;
 
+import model.exceptions.CommandError;
 import model.exceptions.MoveError;
 
-public class Queen extends Piece{
+public class Queen extends Piece {
     public Queen(Color color, Location location, Board board) {
         super(color, location, board,"Q");
     }
     @Override
-    public void moveToLocation(Location newLocation) throws MoveError
-    {
+    public void moveToLocation(Location newLocation) throws MoveError, CommandError {
         if (isValidMove(newLocation)){
             board.movePiece(location,newLocation);
         }
         else {
-            throw new MoveError(getName());
+            throw new MoveError(MoveError.QUEEN);
         }
     }
 
@@ -56,4 +56,6 @@ public class Queen extends Piece{
     public String getName() {
         return "Queen";
     }
+
+
 }
