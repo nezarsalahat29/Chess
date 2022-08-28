@@ -113,12 +113,13 @@ public class Board
 
     }
 
-    /*protected void promotion(Location from) throws CommandError {
+    protected void promotion(Location from) throws CommandError {
         if (from.getRow()==7 || from.getRow()==0){
             System.out.println("\n You can make a promotion for your Pawn !!\n");
             System.out.println("\n Enter name of piece that you want to promote to: Queen, Knight, Rook, Bishop.");
             Scanner sc=new Scanner(System.in);
             String pro=sc.nextLine();
+            //sc.close();
             if (pro.equals("Queen")){
                 Queen newPiece=new Queen(from.getPiece().color,from,this);
                 from.setPiece(newPiece);
@@ -141,10 +142,9 @@ public class Board
             }
 
         }
-    }*/
+    }
 
-    private void movePieceCapturing(Location from, Location to)
-    {
+    private void movePieceCapturing(Location from, Location to) throws CommandError {
         Piece captured = getPieceAt(to);
         // End the game if King Captured
         if(captured.getName().equals("King"))
@@ -164,15 +164,21 @@ public class Board
         }else {
             wBoard.remove(captured);
         }
+
         captured.setLocation(null);
         to.setPiece(getPieceAt(from));
         from.setPiece(null);
+        if (to.getPiece().getName().equals("Pawn")){
+            promotion(to);
+        }
     }
 
-    private void movePieceWithoutCapturing(Location from, Location to)
-    {
+    private void movePieceWithoutCapturing(Location from, Location to) throws CommandError {
         to.setPiece(getPieceAt(from));
         from.setPiece(null);
+        if (to.getPiece().getName().equals("Pawn")){
+            promotion(to);
+        }
     }
 
     public boolean isKingInCheck(boolean turn) throws MoveError {
